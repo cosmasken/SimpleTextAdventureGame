@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dungeon>
+    <room>
+        <id>0</id>
+        <north>0</north>
+        <west>0</west>
+        <east>0</east>
+        <south>1</south>
+        <description>Room 1</description>
+    </room>
+    <room>
+        <id>1</id>
+        <north>0</north>
+        <west>0</west>
+        <east>0</east>
+        <south>2</south>
+        <description>Room 2</description>
+    </room>
+    <room>
+        <id>2</id>
+        <north>1</north>
+        <west>0</west>
+        <east>3</east>
+        <south>6</south>
+        <description>Room 3</description>
+    </room>
+    <room>
+        <id>3</id>
+        <north>0</north>
+        <west>2</west>
+        <east>4</east>
+        <south>7</south>
+        <description>Room 4</description>
+    </room>
+    <room>
+        <id>4</id>
+        <north>5</north>
+        <west>3</west>
+        <east>0</east>
+        <south>0</south>
+        <description>Room 5</description>
+    </room>
+    <room>
+        <id>5</id>
+        <north>0</north>
+        <west>0</west>
+        <east>0</east>
+        <south>4</south>
+        <description>Room 6</description>
+    </room>
+    <room>
+        <id>6</id>
+        <north>2</north>
+        <west>0</west>
+        <east>7</east>
+        <south>0</south>
+        <description>Room 7</description>
+    </room>
+    <room>
+        <id>7</id>
+        <north>3</north>
+        <west>6</west>
+        <east>0</east>
+        <south>8</south>
+        <description>Room 8</description>
+    </room>
+    <room>
+        <id>8</id>
+        <north>7</north>
+        <west>0</west>
+        <east>0</east>
+        <south>9</south>
+        <description>Room 9</description>
+    </room>
+    <room>
+        <id>9</id>
+        <north>8</north>
+        <west>0</west>
+        <east>0</east>
+        <south>0</south>
+        <description>Room 10</description>
+    </room>
+</dungeon>
