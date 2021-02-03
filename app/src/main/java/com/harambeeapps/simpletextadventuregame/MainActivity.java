@@ -59,7 +59,8 @@ String id,north,west,east,south,description;
             @Override
             public void onClick(View view) {
                 try {
-                    loadXmlFromNetwork(getAssets().open("test.xml"));
+                  String data=  loadXmlFromNetwork(getAssets().open("test.xml"));
+                    tvMap.setText(data);
                 }catch (XmlPullParserException e){
                     e.printStackTrace();
                 } catch (IOException ioException) {
@@ -126,11 +127,20 @@ String id,north,west,east,south,description;
         // This section processes the entries list to combine each entry with HTML markup.
         // Each entry is displayed in the UI as a link that optionally includes
         // a text summary.
-       /* for (Room entry : entries) {
-mylist.add(entry);
+        for (Room entry : entries) {
+            DatabaseHelper dbHandler = new DatabaseHelper(getApplicationContext());
+            dbHandler.insertRoomDetails(Integer.toString(entry.getId()),Integer.toString(entry.getNorth()),
+                    Integer.toString(entry.getWest()),Integer.toString(entry.getEast()),Integer.toString(entry.getSouth()),entry.getDescription());
 
-        }*/
-        return mylist.toString();
+           id=Integer.toString(entry.getId());
+           north =Integer.toString(entry.getNorth()) ;
+           west=Integer.toString(entry.getWest()) ;
+           east = Integer.toString(entry.getEast());
+           south= Integer.toString(entry.getSouth());
+           description =entry.getDescription();
+           Toast.makeText(getApplicationContext(),id+north+west+east+south+description,Toast.LENGTH_SHORT).show();
+        }
+        return entries.toString();
     }
 
     // Given a string representation of a URL, sets up a connection and gets

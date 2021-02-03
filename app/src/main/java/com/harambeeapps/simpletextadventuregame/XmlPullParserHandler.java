@@ -97,8 +97,6 @@ public class XmlPullParserHandler {
                 skip(parser);
             }
         }
-        Log.d("uiwfgwfgwefgweigfwe", new Room(Integer.parseInt(id), Integer.parseInt(north),
-                Integer.parseInt(west),Integer.parseInt(east),Integer.parseInt(south),description).toString());
         return new Room(Integer.parseInt(id), Integer.parseInt(north), Integer.parseInt(west),Integer.parseInt(east),Integer.parseInt(south),description);
     }
 
