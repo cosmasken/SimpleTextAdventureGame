@@ -25,6 +25,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_EAST = "east";
     private static final String KEY_SOUTH = "south";
     private static final String KEY_DESCRIPTION = "description";
+    private static final String TABLE_Session = "sessiondetails";
+    private static final String ROOM_ID = "roomid";
    /* public DatabaseHelper(Context context, String name, CursorFactory factory, int version) {
         super(context, name, factory, version);
     }*/
@@ -97,21 +99,19 @@ class DatabaseHelper extends SQLiteOpenHelper {
         return  roomList;
     }
     // Get User Details based on userid
-    public ArrayList<HashMap<String, String>> GetRoomByRoomId(int roomId){
+    public Room getRoomFromId(int roomId){
         SQLiteDatabase db = this.getWritableDatabase();
-        ArrayList<HashMap<String, String>> roomList = new ArrayList<>();
+       Room room = new Room();
         String query = "SELECT north, west, east, south, description FROM "+ TABLE_Details;
         Cursor cursor = db.query(TABLE_Details, new String[]{KEY_NORTH, KEY_WEST, KEY_EAST, KEY_SOUTH, KEY_DESCRIPTION}, KEY_ID+ "=?",new String[]{String.valueOf(roomId)},null, null, null, null);
         if (cursor.moveToNext()){
-            HashMap<String,String> room = new HashMap<>();
-            room.put("north",cursor.getString(cursor.getColumnIndex(KEY_NORTH)));
-            room.put("west",cursor.getString(cursor.getColumnIndex(KEY_WEST)));
-            room.put("east",cursor.getString(cursor.getColumnIndex(KEY_EAST)));
-            room.put("south",cursor.getString(cursor.getColumnIndex(KEY_SOUTH)));
-            room.put("description",cursor.getString(cursor.getColumnIndex(KEY_DESCRIPTION)));
-            roomList.add(room);
+          room.setNorth(cursor.getInt(cursor.getColumnIndex(KEY_NORTH)));
+          room.setSouth(cursor.getInt(cursor.getColumnIndex(KEY_SOUTH)));
+            room.setEast(cursor.getInt(cursor.getColumnIndex(KEY_EAST)));
+            room.setWest(cursor.getInt(cursor.getColumnIndex(KEY_WEST)));
+            room.setDescription(cursor.getString(cursor.getColumnIndex(KEY_DESCRIPTION)));
         }
-        return  roomList;
+        return  room;
     }
     // Delete User Details
     public void DeleteRoom(int roomId){

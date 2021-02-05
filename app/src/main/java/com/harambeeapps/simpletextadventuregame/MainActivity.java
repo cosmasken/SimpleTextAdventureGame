@@ -1,28 +1,31 @@
 package com.harambeeapps.simpletextadventuregame;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.mobprofs.retrofit.converters.SimpleXmlConverter;
-
-import org.simpleframework.xml.Element;
-import org.simpleframework.xml.Root;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import okhttp3.OkHttpClient;
-import retrofit.RestAdapter;
+import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.appcompat.widget.Toolbar;
 
 /**
  * Created by 2ndgengod on 1/29/2021.
@@ -33,15 +36,31 @@ Button btnNorth,btnWest,btnEast,btnSouth,btnOption1,btnOption2,btnOption3;
 TextView tvMap,tvStory;
 String id,north,west,east,south,description;
     int NO_OF_ROOMS ;
+    int CURRENTROOMNUMBER = 1;
+    DatabaseHelper dbHelper;
     static final int NO_CONNECTION = -1;
-    List<Room> roomList;
+    List<Room> roomList = null;
+    List<Room> mroomList = null;
 
      Room room;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = new Toolbar(this);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, 168);
+        toolbar.setLayoutParams(layoutParams);
+        toolbar.setPopupTheme(R.style.Theme_SimpleTextAdventureGame);
+        toolbar.setBackgroundColor(getResources().getColor(R.color.purple_200));
+        toolbar.setTitle("Game");
+        toolbar.setVisibility(View.VISIBLE);
+        LinearLayoutCompat ll = (LinearLayoutCompat) findViewById(R.id.main);
+        ll.addView(toolbar, 0);
+        setSupportActionBar(toolbar);
         loadUi();
+        runGame();
+        startGame(CURRENTROOMNUMBER);
 
     }
 
@@ -55,48 +74,10 @@ String id,north,west,east,south,description;
         btnOption3 = findViewById(R.id.btnOption3);
         tvMap = findViewById(R.id.tvMap);
         tvStory = findViewById(R.id.tvStory);
-        btnOption1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                  String data=  loadXmlFromNetwork(getAssets().open("test.xml"));
-                    tvMap.setText(data);
-                }catch (XmlPullParserException e){
-                    e.printStackTrace();
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
-               // Log.d("TAGGGGGGGGGGGGGGGGGG","FIIIIIIIIIIIIIIIIIIIIII");
-            }
-        });
+
+
     }
-    // Implementation of AsyncTask used to download XML feed from stackoverflow.com.
-    private class DownloadXmlTask extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... urls) {
-            try {
-                Log.d("AAAAAAAAAAAAAAAAAAAAAAAAAA","AAAAAAAAAAAAAAAAA");
-                return loadXmlFromNetwork(getApplicationContext().getAssets().open("test.xml"));
-
-            } catch (IOException e) {
-                return getResources().getString(R.string.connection_error);
-            } catch (XmlPullParserException e) {
-                return getResources().getString(R.string.error);
-            }
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            setContentView(R.layout.activity_main);
-            // Displays the HTML string in the UI via a WebView
-            //TextView textView = (TextView) findViewById(R.id.tvMap);
-           tvMap.setText(result);
-        }
-    }
-
-    // Uploads XML from stackoverflow.com, parses it, and combines it with
-// HTML markup. Returns HTML string.
-    private String loadXmlFromNetwork(InputStream is) throws XmlPullParserException, IOException {
+    private List<Room> loadXmlFromNetwork(InputStream is) throws XmlPullParserException, IOException {
         InputStream stream = null  ;
         List<Room> mylist= null;
         // Instantiate the parser
@@ -138,13 +119,332 @@ String id,north,west,east,south,description;
            east = Integer.toString(entry.getEast());
            south= Integer.toString(entry.getSouth());
            description =entry.getDescription();
-           Toast.makeText(getApplicationContext(),id+north+west+east+south+description,Toast.LENGTH_SHORT).show();
+       
         }
-        return entries.toString();
+        return entries;
     }
 
-    // Given a string representation of a URL, sets up a connection and gets
-// an input stream.
+    public void runGame(){
+        try {
+            mroomList=  loadXmlFromNetwork(getAssets().open("test.xml"));
+           // tvMap.setText(mroomList.toString());
+        }catch (XmlPullParserException e){
+            e.printStackTrace();
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
 
+
+    }
+    public void nextRoom(int roomNumber){
+        CURRENTROOMNUMBER = roomNumber;
+        DatabaseHelper databaseHelper =new  DatabaseHelper(getApplicationContext());
+       Room room = databaseHelper.getRoomFromId(roomNumber);
+       tvMap.setText(Integer.toString(room.getSouth()));
+    }
+
+
+    public void startGame(int currentRoomId){
+        switch (currentRoomId){
+            case 1:
+                btnNorth.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        showAlertDialogButtonClicked();
+                    }
+                });
+                btnSouth.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        showAlertDialogButtonClicked();
+                    }
+                });
+                btnEast.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        showAlertDialogButtonClicked();
+                    }
+                });
+                btnWest.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        showAlertDialogButtonClicked();
+                    }
+                });
+                btnSouth.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                  nextRoom(2);
+
+                    }
+                });
+                break;
+            case 2:
+                btnNorth.setOnClickListener(view -> Toast.makeText(getApplicationContext(),"north",Toast.LENGTH_SHORT).show());
+                btnSouth.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(getApplicationContext(),"south",Toast.LENGTH_SHORT).show();
+                    }
+                });
+                btnEast.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(getApplicationContext(),"east",Toast.LENGTH_SHORT).show();
+                    }
+                });
+                btnWest.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(getApplicationContext(),"west",Toast.LENGTH_SHORT).show();
+                    }
+                });
+                btnSouth.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+                break;
+            case 3:
+                btnNorth.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+                btnSouth.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+                btnEast.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+                btnWest.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+                btnSouth.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+                break;
+            case 4:
+                btnNorth.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+                btnSouth.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+                btnEast.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+                btnWest.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+                btnSouth.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+                break;
+            case 5:
+                btnNorth.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+                btnSouth.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+                btnEast.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+                btnWest.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+                btnSouth.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+                break;
+            case 6:
+                btnNorth.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+                btnSouth.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+                btnEast.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+                btnWest.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+                btnSouth.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+                break;
+            case 7:
+                btnNorth.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+                btnSouth.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+                btnEast.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+                btnWest.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+                btnSouth.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+                break;
+            case 8:
+                btnNorth.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+                btnSouth.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+                btnEast.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+                btnWest.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+                btnSouth.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+                break;
+            case 9:
+                btnNorth.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+                btnSouth.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+                btnEast.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+                btnWest.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+                btnSouth.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void showAlertDialogButtonClicked() {
+        // setup the alert builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("No Exit");
+        builder.setMessage("There is no way through here!!");
+        // add a button
+        builder.setNeutralButton("OK",null);
+        // create and show the alert dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
 
 }

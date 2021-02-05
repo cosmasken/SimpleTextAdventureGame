@@ -3,32 +3,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/main"
     xmlns:tools="http://schemas.android.com/tools">
     <androidx.appcompat.widget.LinearLayoutCompat
         android:orientation="vertical"
+        android:layout_weight="0.5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/tvMap"
+            android:layout_weight="0.3"
             android:layout_width="match_parent"
-            android:layout_height="162dp"
-            android:text="MAP HERE"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Room One"
             android:textSize="36sp" />
 
         <TextView
+            android:layout_weight="0.7"
             android:id="@+id/tvStory"
             android:layout_width="match_parent"
-            android:layout_height="189dp"
-            android:text="Story text here"
+            android:layout_height="wrap_content"
+            android:text="@string/storytext"
             android:textSize="36sp"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 
     <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_weight="0.5"
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 <com.google.android.material.card.MaterialCardView
     android:background="@color/design_default_color_error"
     android:id="@+id/directions"

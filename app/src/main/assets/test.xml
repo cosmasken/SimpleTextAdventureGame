@@ -5,7 +5,7 @@
         <north>0</north>
         <west>0</west>
         <east>0</east>
-        <south>0</south>
+        <south>1</south>
         <description>Room 1</description>
     </room>
     <room>

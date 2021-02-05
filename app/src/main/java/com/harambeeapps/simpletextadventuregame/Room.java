@@ -1,7 +1,5 @@
 package com.harambeeapps.simpletextadventuregame;
 
-import org.simpleframework.xml.Element;
-import org.simpleframework.xml.Root;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -14,11 +12,16 @@ import androidx.annotation.NonNull;
  */
 
 public class Room {
+    private int id;
+    private int north;
+    private int east;
+    private int south;
+    private int west;
+    private String  description;
+
     public Room() {
 
     }
-
-
     public Room(int id, int north, int east, int south, int west, String description) {
        this.id = id;
         this.north = north;
@@ -28,21 +31,6 @@ public class Room {
         this.description = description;
     }
 
-
-    private int id;
-    private int north;
-    private int east;
-    private int south;
-    private int west;
-    private String description;
-
-    /*Room() {
-        north = NO_CONNECTION;
-        east = NO_CONNECTION;
-        south = NO_CONNECTION;
-        west = NO_CONNECTION;
-        description = "nothing";
-    }*/
 
     public int getId() {
         return id;

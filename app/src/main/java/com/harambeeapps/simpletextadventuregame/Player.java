@@ -6,18 +6,18 @@ package com.harambeeapps.simpletextadventuregame;
 
 class Player {
 
-    //player class must have naem,location,inventory and source
+    //player class must have name,location,inventory and source
     //instead of an array of descriptions,use array of locale objects
 
-    private String playerName;
     public String inventory;
-    public int score;
-    public int currentRoom;
+    public int playerXp;
+    public int playerId;
+    private String playerName;
 
-    public Player(String playerName, String inventory, int score, int currentRoom) {
-        this.playerName = playerName;
+    public Player(String inventory, int playerXp, int playerId, String playerName) {
         this.inventory = inventory;
-        this.score = score;
-        this.currentRoom = currentRoom;
+        this.playerXp = playerXp;
+        this.playerId = playerId;
+        this.playerName = playerName;
     }
 }
