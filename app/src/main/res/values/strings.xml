@@ -4,4 +4,9 @@
 <string name="error">error</string>
     <string name="connection_error">Connection Error</string>
     <string name="storytext">You are in the sitting room, you need to visit your friend out of town.which side will you go?</string>
+    <string name="search">Search the Room</string>
+    <string name="look">Look around the room</string>
+    <string name="weapon">Congragulation, you found a weapon.It may be useful later</string>
+    <string name="back">You went all the way back"</string>
+   <string name="mouse"> You found a mouse.He looks nice</string>
 </resources>

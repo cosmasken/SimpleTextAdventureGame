@@ -73,6 +73,7 @@ public class XmlPullParserHandler {
         String west = null;
         String east = null;
         String south = null;
+        String title = null;
         String description = null;
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.getEventType() != XmlPullParser.START_TAG) {
@@ -91,13 +92,16 @@ public class XmlPullParserHandler {
             else if (name.equals("south")) {
                 south = readSouth(parser);
             }
+            else if (name.equals("title")) {
+                title = readTitle(parser);
+            }
             else if (name.equals("description")) {
                 description = readDescription(parser);
             }else {
                 skip(parser);
             }
         }
-        return new Room(Integer.parseInt(id), Integer.parseInt(north), Integer.parseInt(west),Integer.parseInt(east),Integer.parseInt(south),description);
+        return new Room(Integer.parseInt(id), Integer.parseInt(north), Integer.parseInt(west),Integer.parseInt(east),Integer.parseInt(south),title,description);
     }
 
     private String readId(XmlPullParser parser) throws XmlPullParserException, IOException {
@@ -130,6 +134,12 @@ public class XmlPullParserHandler {
         String south = readText(parser);
         parser.require(XmlPullParser.END_TAG, null, "south");
         return south;
+    }
+    private String readTitle(XmlPullParser parser) throws XmlPullParserException, IOException {
+        parser.require(XmlPullParser.START_TAG, null, "title");
+        String title = readText(parser);
+        parser.require(XmlPullParser.END_TAG, null, "title");
+        return title;
     }
     private String readDescription(XmlPullParser parser) throws XmlPullParserException, IOException {
         parser.require(XmlPullParser.START_TAG, null, "description");

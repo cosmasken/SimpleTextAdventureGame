@@ -24,6 +24,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_WEST = "west";
     private static final String KEY_EAST = "east";
     private static final String KEY_SOUTH = "south";
+    private static final String KEY_TITLE = "title";
     private static final String KEY_DESCRIPTION = "description";
     private static final String TABLE_Session = "sessiondetails";
     private static final String ROOM_ID = "roomid";
@@ -42,6 +43,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 + KEY_WEST + " TEXT,"
                 + KEY_EAST + " TEXT,"
                 + KEY_SOUTH + " TEXT,"
+                + KEY_TITLE + " TEXT,"
                 + KEY_DESCRIPTION + " TEXT"+ ")";
         db.execSQL(CREATE_TABLE);
     }
@@ -65,7 +67,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
     // **** CRUD (Create, Read, Update, Delete) Operations ***** //
 
     // Adding new User Details
-    void insertRoomDetails(String id, String north, String west, String east, String south, String description){
+    void insertRoomDetails(String id, String north, String west, String east, String south,String title, String description){
         //Get the Data Repository in write mode
         SQLiteDatabase db = this.getWritableDatabase();
         //Create a new map of values, where column names are the keys
@@ -75,6 +77,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         cValues.put(KEY_EAST, east);
         cValues.put(KEY_WEST, west);
         cValues.put(KEY_SOUTH, south);
+        cValues.put(KEY_TITLE, title);
         cValues.put(KEY_DESCRIPTION, description);
         // Insert the new row, returning the primary key value of the new row
         long newRowId = db.insert(TABLE_Details,null, cValues);
@@ -84,7 +87,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
     public ArrayList<HashMap<String, String>> GetUsers(){
         SQLiteDatabase db = this.getWritableDatabase();
         ArrayList<HashMap<String, String>> roomList = new ArrayList<>();
-        String query = "SELECT id, north, west, east, south, description FROM "+ TABLE_Details;
+        String query = "SELECT id, north, west, east, south,title description FROM "+ TABLE_Details;
         Cursor cursor = db.rawQuery(query,null);
         while (cursor.moveToNext()){
             HashMap<String,String> room = new HashMap<>();
@@ -93,6 +96,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
             room.put("west",cursor.getString(cursor.getColumnIndex(KEY_WEST)));
             room.put("east",cursor.getString(cursor.getColumnIndex(KEY_EAST)));
             room.put("south",cursor.getString(cursor.getColumnIndex(KEY_SOUTH)));
+            room.put("title",cursor.getString(cursor.getColumnIndex(KEY_TITLE)));
             room.put("description",cursor.getString(cursor.getColumnIndex(KEY_DESCRIPTION)));
             roomList.add(room);
         }
@@ -102,13 +106,14 @@ class DatabaseHelper extends SQLiteOpenHelper {
     public Room getRoomFromId(int roomId){
         SQLiteDatabase db = this.getWritableDatabase();
        Room room = new Room();
-        String query = "SELECT north, west, east, south, description FROM "+ TABLE_Details;
-        Cursor cursor = db.query(TABLE_Details, new String[]{KEY_NORTH, KEY_WEST, KEY_EAST, KEY_SOUTH, KEY_DESCRIPTION}, KEY_ID+ "=?",new String[]{String.valueOf(roomId)},null, null, null, null);
+        String query = "SELECT north, west, east, south,title, description FROM "+ TABLE_Details;
+        Cursor cursor = db.query(TABLE_Details, new String[]{KEY_NORTH, KEY_WEST, KEY_EAST, KEY_SOUTH,KEY_TITLE, KEY_DESCRIPTION}, KEY_ID+ "=?",new String[]{String.valueOf(roomId)},null, null, null, null);
         if (cursor.moveToNext()){
           room.setNorth(cursor.getInt(cursor.getColumnIndex(KEY_NORTH)));
           room.setSouth(cursor.getInt(cursor.getColumnIndex(KEY_SOUTH)));
             room.setEast(cursor.getInt(cursor.getColumnIndex(KEY_EAST)));
             room.setWest(cursor.getInt(cursor.getColumnIndex(KEY_WEST)));
+            room.setTitle(cursor.getString(cursor.getColumnIndex(KEY_TITLE)));
             room.setDescription(cursor.getString(cursor.getColumnIndex(KEY_DESCRIPTION)));
         }
         return  room;
@@ -120,7 +125,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
     // Update User Details
-    public int UpdateRoomDetails(int id, String north, String west,String east, String south, String description){
+    public int UpdateRoomDetails(int id, String north, String west,String east, String south,String title, String description){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cVals = new ContentValues();
         cVals.put(KEY_ID, id);
@@ -128,6 +133,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         cVals.put(KEY_WEST, west);
         cVals.put(KEY_EAST, east);
         cVals.put(KEY_SOUTH, south);
+        cVals.put(KEY_TITLE, title);
         cVals.put(KEY_DESCRIPTION, description);
         int count = db.update(TABLE_Details, cVals, KEY_ID+" = ?",new String[]{String.valueOf(id)});
         return  count;
