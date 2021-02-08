@@ -16,17 +16,15 @@
             android:layout_weight="0.3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Room One"
-            android:textSize="36sp" />
+            android:gravity="center"/>
 
         <TextView
             android:layout_weight="0.7"
             android:id="@+id/tvStory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/storytext"
-            android:textSize="36sp"/>
+            android:scrollbars = "vertical"
+            />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 

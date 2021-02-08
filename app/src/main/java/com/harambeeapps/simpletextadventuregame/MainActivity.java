@@ -1,25 +1,20 @@
 package com.harambeeapps.simpletextadventuregame;
 
-import android.content.Context;
-import android.content.DialogInterface;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.method.ScrollingMovementMethod;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import androidx.appcompat.app.AlertDialog;
@@ -32,13 +27,13 @@ import androidx.appcompat.widget.Toolbar;
  */
 
 public class MainActivity extends AppCompatActivity {
+    static final int NO_CONNECTION = -1;
 Button btnNorth,btnWest,btnEast,btnSouth,btnOption1,btnOption2,btnOption3;
 TextView tvMap,tvStory;
 String id,north,west,east,south,description;
     int NO_OF_ROOMS ;
-    int CURRENTROOMNUMBER = 1;
+    int CURRENTROOMNUMBER = 0;
     DatabaseHelper dbHelper;
-    static final int NO_CONNECTION = -1;
     List<Room> roomList = null;
     List<Room> mroomList = null;
 
@@ -60,7 +55,8 @@ String id,north,west,east,south,description;
         setSupportActionBar(toolbar);
         loadUi();
         runGame();
-        startGame(1);
+        newGame();
+       // startGame(0);
 
     }
 
@@ -74,6 +70,7 @@ String id,north,west,east,south,description;
         btnOption3 = findViewById(R.id.btnOption3);
         tvMap = findViewById(R.id.tvMap);
         tvStory = findViewById(R.id.tvStory);
+        tvStory.setMovementMethod(new ScrollingMovementMethod());
 
 
     }
@@ -144,279 +141,310 @@ String id,north,west,east,south,description;
        Room room = databaseHelper.getRoomFromId(roomNumber);
        tvMap.setText(room.getTitle());
         tvStory.setText(room.getDescription());
+        databaseHelper.close();
     }
 
-
-    public void startGame(int currentRoomId){
-        switch (currentRoomId){
-            case 0:
-                btnNorth.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        showAlertDialogButtonClicked();
-                    }
-                });
-                btnEast.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        showAlertDialogButtonClicked();
-                    }
-                });
-                btnWest.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        showAlertDialogButtonClicked();
-                    }
-                });
-                btnSouth.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-nextRoom(1);
-
-                    }
-                });
-                break;
-            case 1:
-                btnNorth.setOnClickListener(view -> showAlertDialogButtonClicked());
-
-                btnEast.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        showAlertDialogButtonClicked();
-                    }
-                });
-                btnWest.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        showAlertDialogButtonClicked();
-                    }
-                });
-                btnSouth.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                     nextRoom(2);
-                    }
-                });
-                break;
-            case 2:
-                btnNorth.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-nextRoom(1);
-                    }
-                });
-                btnSouth.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-nextRoom(6);
-                    }
-                });
-                btnEast.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-nextRoom(3);
-                    }
-                });
-                btnWest.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-showAlertDialogButtonClicked();
-                    }
-                });
-
-                break;
-            case 3:
-                btnNorth.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-showAlertDialogButtonClicked();
-                    }
-                });
-
-                btnEast.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-nextRoom(4);
-                    }
-                });
-                btnWest.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-nextRoom(2);
-                    }
-                });
-                btnSouth.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-nextRoom(7);
-                    }
-                });
-                break;
-            case 4:
-                btnNorth.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-nextRoom(5);
-                    }
-                });
-                btnEast.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-showAlertDialogButtonClicked();
-                    }
-                });
-                btnWest.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-nextRoom(3);
-                    }
-                });
-                btnSouth.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-showAlertDialogButtonClicked();
-                    }
-                });
-                break;
-            case 5:
-                btnNorth.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-showAlertDialogButtonClicked();
-                    }
-                });
-
-                btnEast.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-showAlertDialogButtonClicked();
-                    }
-                });
-                btnWest.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-showAlertDialogButtonClicked();
-                    }
-                });
-                btnSouth.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-nextRoom(4);
-                    }
-                });
-                break;
-            case 6:
-                btnNorth.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-nextRoom(2);
-                    }
-                });
-                btnSouth.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-showAlertDialogButtonClicked();
-                    }
-                });
-                btnEast.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-nextRoom(7);
-                    }
-                });
-                btnWest.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-showAlertDialogButtonClicked();
-                    }
-                });
-
-                break;
-            case 7:
-                btnNorth.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-nextRoom(3);
-                    }
-                });
-
-                btnEast.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-showAlertDialogButtonClicked();
-                    }
-                });
-                btnWest.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-nextRoom(6);
-                    }
-                });
-                btnSouth.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-nextRoom(8);
-                    }
-                });
-                break;
-            case 8:
-                btnNorth.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-nextRoom(7);
-                    }
-                });
-
-                btnEast.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-showAlertDialogButtonClicked();
-                    }
-                });
-                btnWest.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-showAlertDialogButtonClicked();
-                    }
-                });
-                btnSouth.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-nextRoom(9);
-                    }
-                });
-                break;
-            case 9:
-                btnNorth.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-nextRoom(8);
-                    }
-                });
-
-                btnEast.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-showAlertDialogButtonClicked();
-                    }
-                });
-                btnWest.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-showAlertDialogButtonClicked();
-                    }
-                });
-                btnSouth.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-showAlertDialogButtonClicked();
-                    }
-                });
-                break;
-            default:
-                break;
+public void  newGame(){
+        nextRoom(0);
+      btnNorth.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            showAlertDialogButtonClicked();
         }
+    });
+    btnEast.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            showAlertDialogButtonClicked();
+        }
+    });
+    btnWest.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            showAlertDialogButtonClicked();
+        }
+    });
+    btnSouth.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            nextRoom(1);
+            gotoRoomOne();
+
+        }
+    });
+}
+
+public void gotoRoomOne(){
+
+    btnNorth.setOnClickListener(view -> showAlertDialogButtonClicked());
+
+    btnEast.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            showAlertDialogButtonClicked();
+        }
+    });
+    btnWest.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            showAlertDialogButtonClicked();
+        }
+    });
+    btnSouth.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            nextRoom(2);
+            gotoRoomTwo();
+        }
+    });
+}
+
+public void gotoRoomTwo(){
+    btnNorth.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            nextRoom(1);
+            gotoRoomOne();
+        }
+    });
+    btnSouth.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            nextRoom(6);
+            gotoRoomSix();
+        }
+    });
+    btnEast.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            nextRoom(3);
+            gotoRoomThree();
+        }
+    });
+    btnWest.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            showAlertDialogButtonClicked();
+        }
+    });
+}
+
+    private void gotoRoomThree() {
+        btnNorth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showAlertDialogButtonClicked();
+            }
+        });
+
+        btnEast.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nextRoom(4);
+                gotoRoomFour();
+
+            }
+        });
+        btnWest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nextRoom(2);
+                gotoRoomTwo();
+            }
+        });
+        btnSouth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nextRoom(7);
+                gotoRoomSeven();
+
+            }
+        });
     }
+
+
+
+
+
+
+
+
+
+    public void gotoRoomFour(){
+        btnNorth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nextRoom(5);
+                gotoRoomFive();
+            }
+        });
+        btnEast.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showAlertDialogButtonClicked();
+            }
+        });
+        btnWest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nextRoom(3);
+                gotoRoomThree();
+            }
+        });
+        btnSouth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showAlertDialogButtonClicked();
+            }
+        });
+}
+
+    private void gotoRoomFive() {
+        btnNorth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showAlertDialogButtonClicked();
+            }
+        });
+
+        btnEast.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showAlertDialogButtonClicked();
+            }
+        });
+        btnWest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showAlertDialogButtonClicked();
+            }
+        });
+        btnSouth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nextRoom(4);
+                gotoRoomFour();
+            }
+        });
+    }
+    private void gotoRoomSix() {
+        btnNorth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nextRoom(2);
+                gotoRoomTwo();
+            }
+        });
+        btnSouth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showAlertDialogButtonClicked();
+            }
+        });
+        btnEast.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nextRoom(7);
+                gotoRoomSeven();
+            }
+        });
+        btnWest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showAlertDialogButtonClicked();
+            }
+        });
+    }
+    private void gotoRoomSeven() {
+        btnNorth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nextRoom(3);
+                gotoRoomThree();
+            }
+        });
+
+        btnEast.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showAlertDialogButtonClicked();
+            }
+        });
+        btnWest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nextRoom(6);
+                gotoRoomSix();
+            }
+        });
+        btnSouth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nextRoom(8);
+                gotoRoomEight();
+            }
+        });
+    }
+    private void gotoRoomEight() {
+        btnNorth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nextRoom(7);
+                gotoRoomSeven();
+            }
+        });
+
+        btnEast.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showAlertDialogButtonClicked();
+            }
+        });
+        btnWest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showAlertDialogButtonClicked();
+            }
+        });
+        btnSouth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nextRoom(9);
+                gotoRoomNine();
+            }
+        });
+    }
+
+
+    private void gotoRoomNine() {
+        btnNorth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nextRoom(8);
+                gotoRoomEight();
+            }
+        });
+
+        btnEast.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showAlertDialogButtonClicked();
+            }
+        });
+        btnWest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showAlertDialogButtonClicked();
+            }
+        });
+        btnSouth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showAlertDialogButtonClicked();
+            }
+        });
+    }
+
 
     public void showAlertDialogButtonClicked() {
         // setup the alert builder
@@ -428,6 +456,42 @@ showAlertDialogButtonClicked();
         // create and show the alert dialog
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    // Initiating Menu XML file (menu.xml)
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    /**
+     * Event Handling for Individual menu item selected
+     * Identify single menu item by it's id
+     * */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
+
+        int itemId = item.getItemId();
+        if (itemId == R.id.menu_save) {// Toast.makeText(MainActivity.this, "Save is Selected", Toast.LENGTH_SHORT).show();
+            databaseHelper.saveGameState(CURRENTROOMNUMBER);
+            Toast.makeText(getApplicationContext(), CURRENTROOMNUMBER, Toast.LENGTH_SHORT).show();
+            return true;
+        } else if (itemId == R.id.menu_load) {// Toast.makeText(MainActivity.this, "Load Selected", Toast.LENGTH_SHORT).show();
+            CURRENTROOMNUMBER = databaseHelper.loadGamestate();
+             Toast.makeText(getApplicationContext(),CURRENTROOMNUMBER,Toast.LENGTH_SHORT).show();
+            return true;
+        } else if (itemId == R.id.menu_clear) {
+            databaseHelper.deleteGameSate();
+              Toast.makeText(getApplicationContext(),CURRENTROOMNUMBER,Toast.LENGTH_SHORT).show();
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
     }
 
 }

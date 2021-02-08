@@ -45,7 +45,10 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 + KEY_SOUTH + " TEXT,"
                 + KEY_TITLE + " TEXT,"
                 + KEY_DESCRIPTION + " TEXT"+ ")";
+        String CREATE_USERTABLE = "CREATE TABLE " + TABLE_Session + "("
+                + ROOM_ID + " INTEGER" + ")";
         db.execSQL(CREATE_TABLE);
+        db.execSQL(CREATE_USERTABLE);
     }
     // Called when there is a database version mismatch meaning that the version
     // of the database on disk needs to be upgraded to the current version.
@@ -65,7 +68,25 @@ class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // **** CRUD (Create, Read, Update, Delete) Operations ***** //
-
+    void saveGameState(int roomID){
+        SQLiteDatabase db = this.getWritableDatabase();
+        //Create a new map of values, where column names are the keys
+        ContentValues cValues = new ContentValues();
+        cValues.put(ROOM_ID, roomID);
+        db.insert(TABLE_Session,null, cValues);
+        db.close();
+    }
+public int loadGamestate(){
+    SQLiteDatabase db = this.getWritableDatabase();
+    String query = "SELECT roomid FROM "+ TABLE_Session;
+    int roomId = 0;
+    Cursor cursor = db.rawQuery(query,null);
+    while (cursor.moveToNext()){
+        HashMap<String,String> room = new HashMap<>();
+        roomId = cursor.getInt(cursor.getColumnIndex(ROOM_ID));
+    }
+    return  roomId;
+}
     // Adding new User Details
     void insertRoomDetails(String id, String north, String west, String east, String south,String title, String description){
         //Get the Data Repository in write mode
@@ -122,6 +143,12 @@ class DatabaseHelper extends SQLiteOpenHelper {
     public void DeleteRoom(int roomId){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_Details, KEY_ID+" = ?",new String[]{String.valueOf(roomId)});
+        db.close();
+    }
+    // Delete User Details
+    public void deleteGameSate(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_Session,null,null);
         db.close();
     }
     // Update User Details
