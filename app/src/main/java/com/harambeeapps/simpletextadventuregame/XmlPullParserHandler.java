@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
+//CLASS FOR PARSING THROUGH XML FILES
 public class XmlPullParserHandler {
     // We don't use namespaces
     private static final String ns = null;
@@ -46,7 +46,7 @@ public class XmlPullParserHandler {
         }
         return entries;
     }
-
+    //  The skip() method ignores unwanted tags.
     private void skip(XmlPullParser parser) throws XmlPullParserException, IOException {
         if (parser.getEventType() != XmlPullParser.START_TAG) {
             throw new IllegalStateException();
@@ -103,7 +103,7 @@ public class XmlPullParserHandler {
         }
         return new Room(Integer.parseInt(id), Integer.parseInt(north), Integer.parseInt(west),Integer.parseInt(east),Integer.parseInt(south),title,description);
     }
-
+//individual methods for reading tags
     private String readId(XmlPullParser parser) throws XmlPullParserException, IOException {
         parser.require(XmlPullParser.START_TAG, ns, "id");
         String id = readText(parser);

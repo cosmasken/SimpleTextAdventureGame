@@ -7,8 +7,8 @@
     <item android:id="@+id/menu_save"
         android:title="Save" />
     <item android:id="@+id/menu_load"
-        android:title="Save" />
+        android:title="Load" />
     <item android:id="@+id/menu_clear"
-        android:title="Save" />
+        android:title="Clear" />
 
 </menu>

@@ -38,6 +38,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
     // to create a new one.
     @Override
     public void onCreate(SQLiteDatabase db){
+        //creates table for storing room info
         String CREATE_TABLE = "CREATE TABLE " + TABLE_Details + "("
                 + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NORTH + " TEXT,"
                 + KEY_WEST + " TEXT,"
@@ -45,7 +46,9 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 + KEY_SOUTH + " TEXT,"
                 + KEY_TITLE + " TEXT,"
                 + KEY_DESCRIPTION + " TEXT"+ ")";
+        //creates table for storing game state
         String CREATE_USERTABLE = "CREATE TABLE " + TABLE_Session + "("
+                + KEY_ID + " INTEGER PRIMARY KEY,"
                 + ROOM_ID + " INTEGER" + ")";
         db.execSQL(CREATE_TABLE);
         db.execSQL(CREATE_USERTABLE);
@@ -61,13 +64,16 @@ class DatabaseHelper extends SQLiteOpenHelper {
         // previous versions can be handled by comparing _oldVersion and _newVersion
         // values.
         // The simplest case is to drop the old table and create a new one.
-        _db.execSQL("DROP TABLE IF EXISTS " + "LOGIN");
+        _db.execSQL("DROP TABLE IF EXISTS " + TABLE_Details);
+        _db.execSQL("DROP TABLE IF EXISTS " + TABLE_Session);
 
         // Create a new one.
         onCreate(_db);
     }
 
     // **** CRUD (Create, Read, Update, Delete) Operations ***** //
+
+    //save game state
     void saveGameState(int roomID){
         SQLiteDatabase db = this.getWritableDatabase();
         //Create a new map of values, where column names are the keys
@@ -76,6 +82,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         db.insert(TABLE_Session,null, cValues);
         db.close();
     }
+    //load game state
 public int loadGamestate(){
     SQLiteDatabase db = this.getWritableDatabase();
     String query = "SELECT roomid FROM "+ TABLE_Session;
@@ -87,7 +94,7 @@ public int loadGamestate(){
     }
     return  roomId;
 }
-    // Adding new User Details
+    // Adding new Room Details
     void insertRoomDetails(String id, String north, String west, String east, String south,String title, String description){
         //Get the Data Repository in write mode
         SQLiteDatabase db = this.getWritableDatabase();
@@ -104,8 +111,8 @@ public int loadGamestate(){
         long newRowId = db.insert(TABLE_Details,null, cValues);
         db.close();
     }
-    // Get User Details
-    public ArrayList<HashMap<String, String>> GetUsers(){
+    // Get Room Details
+    public ArrayList<HashMap<String, String>> getRooms(){
         SQLiteDatabase db = this.getWritableDatabase();
         ArrayList<HashMap<String, String>> roomList = new ArrayList<>();
         String query = "SELECT id, north, west, east, south,title description FROM "+ TABLE_Details;
@@ -123,7 +130,7 @@ public int loadGamestate(){
         }
         return  roomList;
     }
-    // Get User Details based on userid
+    // Get Room Details based on roomID
     public Room getRoomFromId(int roomId){
         SQLiteDatabase db = this.getWritableDatabase();
        Room room = new Room();
@@ -139,19 +146,19 @@ public int loadGamestate(){
         }
         return  room;
     }
-    // Delete User Details
+    // Delete room Details
     public void DeleteRoom(int roomId){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_Details, KEY_ID+" = ?",new String[]{String.valueOf(roomId)});
         db.close();
     }
-    // Delete User Details
+    // Delete Room Details
     public void deleteGameSate(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_Session,null,null);
         db.close();
     }
-    // Update User Details
+    // Update Room Details
     public int UpdateRoomDetails(int id, String north, String west,String east, String south,String title, String description){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cVals = new ContentValues();

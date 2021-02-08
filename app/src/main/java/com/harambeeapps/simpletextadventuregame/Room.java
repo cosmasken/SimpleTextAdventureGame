@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 /**
  * Created by 2ndgengod on 1/29/2021.
  */
-
+//REPRESENTS INDIVIDUAL ROOM
 public class Room {
     private int id;
     private int north;

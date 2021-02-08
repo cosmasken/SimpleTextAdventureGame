@@ -56,10 +56,10 @@ String id,north,west,east,south,description;
         loadUi();
         runGame();
         newGame();
-       // startGame(0);
+
 
     }
-
+//LOAD USER INTERFACE
     public void loadUi(){
         btnNorth = findViewById(R.id.btnNorth);
         btnWest = findViewById(R.id.btnWest);
@@ -74,6 +74,7 @@ String id,north,west,east,south,description;
 
 
     }
+    //LOADS XML FROM GIVEN INPU STREAM
     private List<Room> loadXmlFromNetwork(InputStream is) throws XmlPullParserException, IOException {
         InputStream stream = null  ;
         List<Room> mylist= null;
@@ -123,7 +124,8 @@ String id,north,west,east,south,description;
         }
         return entries;
     }
-
+//GET GAME DATA FROM XML FILE IN ASSETS FOLDER
+    //CAN BE CHANGED TO GET DATA FROM ANY DATA SOURCE
     public void runGame(){
         try {
             mroomList=  loadXmlFromNetwork(getAssets().open("test.xml"));
@@ -136,6 +138,7 @@ String id,north,west,east,south,description;
 
 
     }
+    //CHANGE THE TEXT BASED ON ROOM NUMBER
     public void nextRoom(int roomNumber){
         DatabaseHelper databaseHelper =new  DatabaseHelper(getApplicationContext());
        Room room = databaseHelper.getRoomFromId(roomNumber);
@@ -143,7 +146,7 @@ String id,north,west,east,south,description;
         tvStory.setText(room.getDescription());
         databaseHelper.close();
     }
-
+//lAUNCH NEW GAME
 public void  newGame(){
         nextRoom(0);
       btnNorth.setOnClickListener(new View.OnClickListener() {
@@ -167,13 +170,14 @@ public void  newGame(){
     btnSouth.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            CURRENTROOMNUMBER = 1;
             nextRoom(1);
             gotoRoomOne();
 
         }
     });
 }
-
+//GO TO THE FIRST ROOM
 public void gotoRoomOne(){
 
     btnNorth.setOnClickListener(view -> showAlertDialogButtonClicked());
@@ -193,16 +197,18 @@ public void gotoRoomOne(){
     btnSouth.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            CURRENTROOMNUMBER = 2;
             nextRoom(2);
             gotoRoomTwo();
         }
     });
 }
-
+    //GO TO THE SECOND ROOM
 public void gotoRoomTwo(){
     btnNorth.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            CURRENTROOMNUMBER = 1;
             nextRoom(1);
             gotoRoomOne();
         }
@@ -210,6 +216,7 @@ public void gotoRoomTwo(){
     btnSouth.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            CURRENTROOMNUMBER = 6;
             nextRoom(6);
             gotoRoomSix();
         }
@@ -217,6 +224,7 @@ public void gotoRoomTwo(){
     btnEast.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            CURRENTROOMNUMBER = 3;
             nextRoom(3);
             gotoRoomThree();
         }
@@ -228,7 +236,7 @@ public void gotoRoomTwo(){
         }
     });
 }
-
+    //GO TO THE THIRD ROOM
     private void gotoRoomThree() {
         btnNorth.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -240,6 +248,7 @@ public void gotoRoomTwo(){
         btnEast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                CURRENTROOMNUMBER = 4;
                 nextRoom(4);
                 gotoRoomFour();
 
@@ -248,6 +257,7 @@ public void gotoRoomTwo(){
         btnWest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                CURRENTROOMNUMBER =2;
                 nextRoom(2);
                 gotoRoomTwo();
             }
@@ -255,6 +265,7 @@ public void gotoRoomTwo(){
         btnSouth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                CURRENTROOMNUMBER =7;
                 nextRoom(7);
                 gotoRoomSeven();
 
@@ -269,11 +280,12 @@ public void gotoRoomTwo(){
 
 
 
-
+    //GO TO THE FOURTH ROOM
     public void gotoRoomFour(){
         btnNorth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                CURRENTROOMNUMBER =5;
                 nextRoom(5);
                 gotoRoomFive();
             }
@@ -287,6 +299,7 @@ public void gotoRoomTwo(){
         btnWest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                CURRENTROOMNUMBER =3;
                 nextRoom(3);
                 gotoRoomThree();
             }
@@ -298,7 +311,7 @@ public void gotoRoomTwo(){
             }
         });
 }
-
+    //GO TO THE FIFTH ROOM
     private void gotoRoomFive() {
         btnNorth.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -322,15 +335,18 @@ public void gotoRoomTwo(){
         btnSouth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                CURRENTROOMNUMBER =4;
                 nextRoom(4);
                 gotoRoomFour();
             }
         });
     }
+    //GO TO THE SIXTH ROOM
     private void gotoRoomSix() {
         btnNorth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                CURRENTROOMNUMBER = 2;
                 nextRoom(2);
                 gotoRoomTwo();
             }
@@ -344,6 +360,7 @@ public void gotoRoomTwo(){
         btnEast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                CURRENTROOMNUMBER = 7 ;
                 nextRoom(7);
                 gotoRoomSeven();
             }
@@ -355,10 +372,12 @@ public void gotoRoomTwo(){
             }
         });
     }
+    //GO TO THE SEVENTH ROOM
     private void gotoRoomSeven() {
         btnNorth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                CURRENTROOMNUMBER =3;
                 nextRoom(3);
                 gotoRoomThree();
             }
@@ -373,6 +392,7 @@ public void gotoRoomTwo(){
         btnWest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                CURRENTROOMNUMBER =6;
                 nextRoom(6);
                 gotoRoomSix();
             }
@@ -380,16 +400,20 @@ public void gotoRoomTwo(){
         btnSouth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                CURRENTROOMNUMBER =8;
                 nextRoom(8);
                 gotoRoomEight();
             }
         });
     }
+    //GO TO THE EIGHT ROOM
     private void gotoRoomEight() {
         btnNorth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                CURRENTROOMNUMBER = 7;
                 nextRoom(7);
+
                 gotoRoomSeven();
             }
         });
@@ -409,17 +433,19 @@ public void gotoRoomTwo(){
         btnSouth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                CURRENTROOMNUMBER = 9;
                 nextRoom(9);
                 gotoRoomNine();
             }
         });
     }
 
-
+    //GO TO THE NINTH ROOM
     private void gotoRoomNine() {
         btnNorth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                CURRENTROOMNUMBER = 8;
                 nextRoom(8);
                 gotoRoomEight();
             }
@@ -445,7 +471,7 @@ public void gotoRoomTwo(){
         });
     }
 
-
+//SHOW DIALOG WHEN THERE IS NO EXIT
     public void showAlertDialogButtonClicked() {
         // setup the alert builder
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -479,15 +505,16 @@ public void gotoRoomTwo(){
         int itemId = item.getItemId();
         if (itemId == R.id.menu_save) {// Toast.makeText(MainActivity.this, "Save is Selected", Toast.LENGTH_SHORT).show();
             databaseHelper.saveGameState(CURRENTROOMNUMBER);
-            Toast.makeText(getApplicationContext(), CURRENTROOMNUMBER, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Game Saved Successfully", Toast.LENGTH_SHORT).show();
             return true;
         } else if (itemId == R.id.menu_load) {// Toast.makeText(MainActivity.this, "Load Selected", Toast.LENGTH_SHORT).show();
             CURRENTROOMNUMBER = databaseHelper.loadGamestate();
-             Toast.makeText(getApplicationContext(),CURRENTROOMNUMBER,Toast.LENGTH_SHORT).show();
+            nextRoom(CURRENTROOMNUMBER);
+             Toast.makeText(getApplicationContext(),"Game Loaded Successfully",Toast.LENGTH_SHORT).show();
             return true;
         } else if (itemId == R.id.menu_clear) {
             databaseHelper.deleteGameSate();
-              Toast.makeText(getApplicationContext(),CURRENTROOMNUMBER,Toast.LENGTH_SHORT).show();
+              Toast.makeText(getApplicationContext(),"Game data cleared Successfully",Toast.LENGTH_SHORT).show();
             return true;
         } else {
             return super.onOptionsItemSelected(item);
