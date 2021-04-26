@@ -1,2 +1,2 @@
 # SimpleTextAdventureGame
- SimpleTextAdventureGame in Android
+ SimpleTextAdventureGame for Android
